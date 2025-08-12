@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  clerkId        String   @unique
+  nome           String
+  sobrenome      String
+  email          String   @unique
+
+
+  apelido        String?
+  nomecompleto   String?
+  telefone       String?
+  datanascimento DateTime?
+  cpf            String?
+  ativo          Boolean  @default(true)
+
+  genero         String?
+  peso           Float?
+  altura         Float?
+  tipoSanguineo  String?
+  doencas        String[]
+  alergias       String[]
+
+  cep            String?
+  logradouro     String?
+  bairro         String?
+  numero         String?
+  cidade         String?
+  uf             String?
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+
+type Medication {
+  nomeMedicamento      String
+  dosagem              String
+  unidadeDosagem       String
+  viaAdministracao     String
+  frequenciaUso        String
+  unidadeDuracao       String?
+
+  duracaoTratamento    String?
+  dataInicioTratamento DateTime?
+  horarioInicio        String?
+}
+
+model Prescription {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  doctorName     String
+  doctorCRM      String
+  especialidade  String?
+
+  dataPrescricao DateTime?
+
+  clerkId        String
+  medications    Medication[]
+
+  observacao      String?
+
+  ativo          Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+
+
+model Post {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  name   String
+  createdAt DateTime @default(now())
+}
